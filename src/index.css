@@ -1,70 +1,47 @@
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+.react-tel-input {
+    @apply w-full;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.react-tel-input .special-label {
+    @apply hidden;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.react-tel-input .form-control {
+    @apply w-full rounded-lg border border-gray-200 py-2 pl-14 h-10 focus:outline-none focus:shadow-lg focus:shadow-emerald-100 focus:border-emerald-300 focus-visible:outline-none;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.react-tel-input .flag-dropdown {
+    @apply bg-white border border-gray-200 border-r-0 rounded-l-lg px-2;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.react-tel-input .flag-dropdown.open {
+    @apply rounded-l-lg bg-white;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.react-tel-input .flag-dropdown.open .selected-flag {
+    @apply rounded-l-lg bg-white;
+}
+
+.react-tel-input .country-list {
+    @apply bg-white rounded-md shadow max-w-max px-1;
+}
+
+.react-tel-input .country-list .search {
+    @apply p-2;
+}
+.react-tel-input .country-list .search .search-box {
+    @apply w-full mx-auto rounded-lg py-2 focus:outline-none focus:shadow-sm focus:shadow-emerald-100 focus:border-emerald-300 focus-visible:outline-none;
+}
+
+.react-tel-input .country-list .country  {
+    @apply focus-within:outline-emerald-300;
+}
+.react-tel-input .country-list .country.highlight  {
+    @apply bg-emerald-100 focus-within:outline-emerald-300;
 }
