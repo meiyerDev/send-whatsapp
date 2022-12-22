@@ -8,7 +8,12 @@ export const useGenerateWhatsappUrl = (): UseGenerateWhatsappUrl => {
   const [whatsappUrl, setWhatsappUrl] = useState<string>('');
 
   const generateWhatsappUrl: GenerateWhatsappUrl = (phone: string) => {
-    const url = `https://wa.me/${phone}`;
+    const queryParams = new URLSearchParams([
+      ['phone', phone],
+      ['type', 'phone_number'],
+      ['app_absent', '0'],
+    ]);
+    const url = `https://api.whatsapp.com/send/?${queryParams.toString()}`;
     setWhatsappUrl(url);
   };
 
