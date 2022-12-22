@@ -4,6 +4,10 @@
   "homepage": "https://meiyerDev.github.io/send-whatsapp",
   "private": true,
   "type": "module",
+  "author": {
+    "name": "Meiyer Jaimes",
+    "url": "https://github.com/meiyerDev"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -15,7 +19,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "libphonenumbers": "^1.3.0",
+    "libphonenumber-js": "^1.10.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-phone-input-2": "^2.15.1"

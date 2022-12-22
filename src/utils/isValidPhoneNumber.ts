@@ -1,11 +1,5 @@
-import libphonenumbers from 'libphonenumbers';
+import { isValidPhoneNumber as validatorPhoneNumber, CountryCode } from 'libphonenumber-js';
 
-const phoneUtil = libphonenumbers.PhoneNumberUtil.getInstance();
 export const isValidPhoneNumber = (phoneNumber: string, country: string): boolean => {
-  try {
-    const number = phoneUtil.parseAndKeepRawInput(phoneNumber, country);
-    return phoneUtil.isValidNumber(number);
-  } catch (error) {
-    return false;
-  }
+  return validatorPhoneNumber(phoneNumber, country.toUpperCase() as CountryCode);
 };

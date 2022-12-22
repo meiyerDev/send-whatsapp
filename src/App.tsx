@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import { PhoneField } from '@/components';
 import { useGenerateWhatsappUrl } from '@/hooks';
+import { isValidPhoneNumber } from '@/utils';
+import { CountryData } from 'react-phone-input-2';
 
 const App = () => {
   const [whatsAppUrl, setWhatsAppUrl] = useGenerateWhatsappUrl();
   const [isPhoneValid, setIsPhoneValid] = useState(false);
+
+  const handleChange = (numberValue: string, country: CountryData) => {
+    if (!numberValue.startsWith('+')) numberValue = `+${numberValue}`;
+    const isValidPhone = isValidPhoneNumber(numberValue, country.countryCode);
+    setIsPhoneValid(isValidPhone);
+    setWhatsAppUrl(isValidPhone ? numberValue : '');
+  };
 
   return (
     <div className='relative h-screen w-screen overflow-hidden bg-gray-100'>
@@ -17,7 +26,7 @@ const App = () => {
             Send Your <span className='text-emerald-500'>WhatsApp</span>
           </h1>
 
-          <PhoneField onChange={(value) => setWhatsAppUrl(value)} onValidate={(isValid) => setIsPhoneValid(isValid)} />
+          <PhoneField onChange={handleChange} isValid={isPhoneValid} />
 
           <a
             aria-disabled={!isPhoneValid}

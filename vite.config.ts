@@ -1,11 +1,11 @@
-import { defineConfig } from 'vite';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/send-whatsapp/',
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
