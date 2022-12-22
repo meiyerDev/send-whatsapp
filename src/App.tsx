@@ -7,6 +7,7 @@ import { CountryData } from 'react-phone-input-2';
 const App = () => {
   const [whatsAppUrl, setWhatsAppUrl] = useGenerateWhatsappUrl();
   const [isPhoneValid, setIsPhoneValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (numberValue: string, country: CountryData) => {
     if (!numberValue.startsWith('+')) numberValue = `+${numberValue}`;
@@ -32,11 +33,27 @@ const App = () => {
             aria-disabled={!isPhoneValid}
             href={whatsAppUrl}
             rel='noopener noreferrer'
-            className={`w-full rounded-3xl bg-emerald-500 py-2 text-center font-medium text-white ${
-              !isPhoneValid && 'pointer-events-none opacity-60'
+            className={`flex w-full items-center justify-center rounded-3xl bg-emerald-500 py-2 font-medium text-white ${
+              (!isPhoneValid || isLoading) && 'pointer-events-none opacity-60'
             }`}
+            onClick={() => setIsLoading(true)}
           >
-            Send
+            {isLoading && (
+              <svg
+                className='-ml-1 mr-3 h-5 w-5 animate-spin text-white'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+              >
+                <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
+                <path
+                  className='opacity-75'
+                  fill='currentColor'
+                  d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                ></path>
+              </svg>
+            )}
+            <span>{isLoading ? 'Loading...' : 'Send'}</span>
           </a>
         </div>
 

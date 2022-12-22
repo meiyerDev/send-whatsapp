@@ -16,6 +16,7 @@ export default defineConfig({
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'vite.svg'],
       manifest: {
+        id: 'meiyerDev.github.io/send-whatsapp/',
         name: 'Send a WhatsApp',
         short_name: 'SendWhatsApp',
         description: 'Send a WhatsApp without saving the contact.',
@@ -30,12 +31,6 @@ export default defineConfig({
             src: 'android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-          },
-          {
-            src: 'android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
           },
         ],
       },
