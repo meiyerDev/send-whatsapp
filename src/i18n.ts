@@ -18,7 +18,6 @@ i18n
     resources,
     load: 'languageOnly',
     fallbackLng: 'en',
-    debug: true,
 
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
