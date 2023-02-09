@@ -9,14 +9,15 @@ const PhoneInputComponent = (PhoneInput as { default?: FC<PhoneInputProps> }).de
 type Props = {
   onChange: (value: string, country: CountryData) => void;
   isValid: boolean;
+  preferredCountry?: string;
 };
 
-export const PhoneField = ({ onChange, isValid }: Props) => (
+export const PhoneField = ({ onChange, isValid, preferredCountry }: Props) => (
   <PhoneInputComponent
     localization={es}
     defaultMask={'... ... ....'}
     alwaysDefaultMask={true}
-    country={'ve'}
+    country={preferredCountry ?? 've'}
     preferredCountries={['ve', 'co', 'us']}
     countryCodeEditable={false}
     enableSearch={true}

@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import { PhoneField } from '@/components';
+import { CountryData } from 'react-phone-input-2';
 import { useGenerateWhatsappUrl } from '@/hooks';
 import { isValidPhoneNumber } from '@/utils';
-import { CountryData } from 'react-phone-input-2';
+
+import { useSettings } from '@/context';
+import { PhoneField, SettingsModal } from '@/components';
+import { Cog6ToothIcon } from '@heroicons/react/20/solid';
 
 const App = () => {
+  const { preferredCountry } = useSettings();
   const [whatsAppUrl, setWhatsAppUrl] = useGenerateWhatsappUrl();
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModalSettings, setIsOpenModalSettings] = useState(false);
 
   const handleChange = (numberValue: string, country: CountryData) => {
     if (!numberValue.startsWith('+')) numberValue = `+${numberValue}`;
@@ -18,6 +23,15 @@ const App = () => {
 
   return (
     <div className='relative h-screen w-screen overflow-hidden bg-gray-100'>
+      <SettingsModal open={isOpenModalSettings} close={() => setIsOpenModalSettings(false)} />
+
+      <button
+        className='fixed top-5 right-5 cursor-pointer rounded-xl p-4 focus-visible:outline focus-visible:outline-emerald-600'
+        onClick={() => setIsOpenModalSettings(true)}
+      >
+        <Cog6ToothIcon className='h-5 w-5 text-emerald-500' />
+      </button>
+
       <div className='absolute top-0 left-0 aspect-1 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 blur-lg' />
       <div className='absolute right-0 bottom-0 aspect-1 w-80 translate-x-2/3 translate-y-2/3 rounded-full bg-emerald-300 blur-lg' />
 
@@ -27,13 +41,13 @@ const App = () => {
             Send Your <span className='text-emerald-500'>WhatsApp</span>
           </h1>
 
-          <PhoneField onChange={handleChange} isValid={isPhoneValid} />
+          <PhoneField preferredCountry={preferredCountry} onChange={handleChange} isValid={isPhoneValid} />
 
           <a
             aria-disabled={!isPhoneValid}
             href={whatsAppUrl}
             rel='noopener noreferrer'
-            className={`flex w-full items-center justify-center rounded-3xl bg-emerald-500 py-2 font-medium text-white ${
+            className={`flex w-full items-center justify-center rounded-3xl bg-emerald-500 py-2 font-medium text-white focus-visible:outline focus-visible:outline-emerald-600 ${
               (!isPhoneValid || isLoading) && 'pointer-events-none opacity-60'
             }`}
             onClick={() => setIsLoading(true)}
