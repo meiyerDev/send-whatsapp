@@ -1,4 +1,5 @@
 import { FC, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Transition, Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useSettings } from '@/context';
@@ -10,12 +11,16 @@ type Props = {
 };
 
 export const SettingsModal: FC<Props> = ({ open, close }) => {
+  const { t, i18n } = useTranslation();
   const { preferredCountry, handleChangePreferredCountry } = useSettings();
 
+  const [languageLocal, setLanguageLocal] = useState(i18n.language);
   const [preferredCountryLocal, setPreferredCountryLocal] = useState(preferredCountry);
 
   const handleSave = () => {
     handleChangePreferredCountry(preferredCountryLocal);
+    i18n.changeLanguage(languageLocal);
+    document.title = t('document.title');
     close();
   };
 
@@ -59,21 +64,32 @@ export const SettingsModal: FC<Props> = ({ open, close }) => {
                 <div className='sm:flex sm:items-start'>
                   <div className='mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left'>
                     <Dialog.Title as='h3' className='text-lg font-medium leading-6 text-gray-900'>
-                      App Settings
+                      {t('app.settings.title')}
                     </Dialog.Title>
-                    <div className='mt-5 flex'>
-                      <div className='flex flex-col'>
-                        <SelectField
-                          label='Preferred Country'
-                          options={[
-                            { label: 'Colombia', value: 'co' },
-                            { label: 'United States', value: 'us' },
-                            { label: 'Venezuela', value: 've' },
-                          ]}
-                          value={preferredCountryLocal}
-                          onChange={setPreferredCountryLocal}
-                        />
-                      </div>
+                    <div className='mt-5 mb-3 flex flex-col gap-3 md:flex-row md:gap-2'>
+                      <SelectField
+                        label={t('app.settings.labels.preferredCountry')}
+                        options={[
+                          { label: t('app.countries.ar'), value: 'ar' },
+                          { label: t('app.countries.cl'), value: 'cl' },
+                          { label: t('app.countries.co'), value: 'co' },
+                          { label: t('app.countries.ec'), value: 'ec' },
+                          { label: t('app.countries.pe'), value: 'pe' },
+                          { label: t('app.countries.us'), value: 'us' },
+                          { label: t('app.countries.ve'), value: 've' },
+                        ]}
+                        value={preferredCountryLocal}
+                        onChange={setPreferredCountryLocal}
+                      />
+                      <SelectField
+                        label={t('app.settings.labels.language')}
+                        options={[
+                          { label: t('app.languages.en'), value: 'en' },
+                          { label: t('app.languages.es'), value: 'es' },
+                        ]}
+                        value={languageLocal}
+                        onChange={setLanguageLocal}
+                      />
                     </div>
                   </div>
                 </div>
@@ -83,14 +99,14 @@ export const SettingsModal: FC<Props> = ({ open, close }) => {
                     className='inline-flex w-full justify-center rounded-md border border-transparent bg-emerald-600/80 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm'
                     onClick={handleSave}
                   >
-                    Save
+                    {t('app.buttons.save')}
                   </button>
                   <button
                     type='button'
                     className='mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm'
                     onClick={close}
                   >
-                    Cancel
+                    {t('app.buttons.cancel')}
                   </button>
                 </div>
               </Dialog.Panel>

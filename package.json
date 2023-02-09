@@ -21,9 +21,13 @@
   "dependencies": {
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^2.0.14",
+    "i18next": "^22.4.9",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.1.1",
     "libphonenumber-js": "^1.10.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^12.1.5",
     "react-phone-input-2": "^2.15.1"
   },
   "devDependencies": {

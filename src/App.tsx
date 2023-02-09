@@ -6,9 +6,12 @@ import { isValidPhoneNumber } from '@/utils';
 import { useSettings } from '@/context';
 import { PhoneField, SettingsModal } from '@/components';
 import { Cog6ToothIcon } from '@heroicons/react/20/solid';
+import { useTranslation } from 'react-i18next';
 
 const App = () => {
+  const { t } = useTranslation();
   const { preferredCountry } = useSettings();
+
   const [whatsAppUrl, setWhatsAppUrl] = useGenerateWhatsappUrl();
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,9 +40,7 @@ const App = () => {
 
       <div className='relative mx-auto h-full max-w-xs'>
         <div className='flex h-full flex-col items-center justify-center gap-4'>
-          <h1 className='text-3xl font-bold'>
-            Send Your <span className='text-emerald-500'>WhatsApp</span>
-          </h1>
+          <h1 className='text-3xl font-bold' dangerouslySetInnerHTML={{ __html: t('app.title') }}></h1>
 
           <PhoneField preferredCountry={preferredCountry} onChange={handleChange} isValid={isPhoneValid} />
 
@@ -67,13 +68,13 @@ const App = () => {
                 ></path>
               </svg>
             )}
-            <span>{isLoading ? 'Loading...' : 'Send'}</span>
+            <span>{isLoading ? t('app.buttons.loading') + '...' : t('app.buttons.send')}</span>
           </a>
         </div>
 
         <div className='absolute bottom-10 w-full'>
           <p className='w-full text-center text-xs font-semibold text-gray-500'>
-            Made with <span className='text-red-500'>❤</span> by{' '}
+            {t('app.footer.madeWidth')} <span className='text-red-500'>❤</span> {t('app.footer.by')}{' '}
             <a
               href='https://github.com/meiyerDev'
               target='_blank'
