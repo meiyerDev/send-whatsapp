@@ -58,7 +58,7 @@ const App = () => {
 
       <div className='relative mx-auto h-full max-w-xs'>
         <div className='flex h-full flex-col items-center justify-center gap-4'>
-          <h1 className='text-3xl font-bold' dangerouslySetInnerHTML={{ __html: t('app.title') }}></h1>
+          <h1 className='text-3xl font-bold' dangerouslySetInnerHTML={{ __html: t('app.title') as string }}></h1>
 
           <PhoneField
             value={phone}

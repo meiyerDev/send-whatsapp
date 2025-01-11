@@ -1,4 +1,4 @@
-import { ClipboardEvent, FC, KeyboardEvent, useState } from 'react';
+import { ClipboardEvent, FC, useState } from 'react';
 import PhoneInput, { CountryData, PhoneInputProps } from 'react-phone-input-2';
 import es from 'react-phone-input-2/lang/es.json';
 
@@ -24,15 +24,20 @@ export const PhoneField = ({ value, onChange, onEnter, isValid, preferredCountry
     const pastedData = clipboardData.getData('Text')?.replace(/[^0-9]/g, '') ?? '';
 
     if (pastedData.startsWith('+')) {
-      onChange(pastedData, '');
+      onChange(pastedData, country);
       return;
     }
 
     if (pastedData.startsWith('0') && preferredCountry === 've') {
-      onChange(e.currentTarget.value + pastedData.slice(1), '');
+      onChange(e.currentTarget.value + pastedData.slice(1), country);
       return;
     }
   };
+
+  const handleChange = (value: string, country: CountryData) => {
+    setCountry(country.countryCode);
+    onChange(value, country.countryCode);
+  }
 
   return (
     <PhoneInputComponent
@@ -46,11 +51,8 @@ export const PhoneField = ({ value, onChange, onEnter, isValid, preferredCountry
       enableSearch={true}
       disableSearchIcon={true}
       onEnterKeyPress={onEnter}
-      onMount={(value: string, country: CountryData) => {
-        setCountry(country.countryCode);
-        onChange(value, country.countryCode);
-      }}
-      onChange={(value: string, country: CountryData) => onChange(value, country.countryCode)}
+      onMount={handleChange}
+      onChange={handleChange}
       isValid={isValid}
       inputProps={{
         onPaste: handlePaste,
