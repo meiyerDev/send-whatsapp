@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CountryData } from 'react-phone-input-2';
 import { useGenerateWhatsappUrl } from '@/hooks';
 import { isValidPhoneNumber } from '@/utils';
@@ -13,26 +13,44 @@ const App = () => {
   const { preferredCountry } = useSettings();
 
   const [whatsAppUrl, setWhatsAppUrl] = useGenerateWhatsappUrl();
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const [phone, setPhone] = useState('');
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModalSettings, setIsOpenModalSettings] = useState(false);
 
-  const handleChange = (numberValue: string, country: CountryData) => {
+  const handleChange = (numberValue: string, country: CountryData['countryCode']) => {
+    setPhone(numberValue);
     if (!numberValue.startsWith('+')) numberValue = `+${numberValue}`;
-    const isValidPhone = isValidPhoneNumber(numberValue, country.countryCode);
+    const isValidPhone = isValidPhoneNumber(numberValue, country);
     setIsPhoneValid(isValidPhone);
     setWhatsAppUrl(isValidPhone ? numberValue : '');
   };
+
+  const activateLink = () => {
+    if (linkRef.current && isPhoneValid) {
+      linkRef.current.click();
+    }
+  }
+
+  const activateLoading = () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
+  }
 
   return (
     <div className='relative h-screen w-screen overflow-hidden bg-gray-100'>
       <SettingsModal open={isOpenModalSettings} close={() => setIsOpenModalSettings(false)} />
 
       <button
-        className='fixed top-5 right-5 cursor-pointer rounded-xl p-4 focus-visible:outline focus-visible:outline-emerald-600'
+        type='button'
+        className='fixed top-5 right-5 cursor-pointer rounded-xl p-6 focus-visible:outline focus-visible:outline-emerald-600'
         onClick={() => setIsOpenModalSettings(true)}
       >
-        <Cog6ToothIcon className='h-5 w-5 text-emerald-500' />
+        <Cog6ToothIcon
+          className='h-5 w-5 text-emerald-500'
+          onClick={() => setIsOpenModalSettings(true)}
+        />
       </button>
 
       <div className='absolute top-0 left-0 aspect-1 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 blur-lg' />
@@ -42,16 +60,22 @@ const App = () => {
         <div className='flex h-full flex-col items-center justify-center gap-4'>
           <h1 className='text-3xl font-bold' dangerouslySetInnerHTML={{ __html: t('app.title') }}></h1>
 
-          <PhoneField preferredCountry={preferredCountry} onChange={handleChange} isValid={isPhoneValid} />
+          <PhoneField
+            value={phone}
+            onEnter={activateLink}
+            preferredCountry={preferredCountry}
+            onChange={handleChange}
+            isValid={isPhoneValid}
+          />
 
           <a
+            ref={linkRef}
             aria-disabled={!isPhoneValid}
             href={whatsAppUrl}
             rel='noopener noreferrer'
-            className={`flex w-full items-center justify-center rounded-3xl bg-emerald-500 py-2 font-medium text-white focus-visible:outline focus-visible:outline-emerald-600 ${
-              (!isPhoneValid || isLoading) && 'pointer-events-none opacity-60'
-            }`}
-            onClick={() => setIsLoading(true)}
+            className={`flex w-full items-center justify-center rounded-3xl bg-emerald-500 py-2 font-medium text-white focus-visible:outline focus-visible:outline-emerald-600 ${(!isPhoneValid || isLoading) && 'pointer-events-none opacity-60'
+              }`}
+            onClick={activateLoading}
           >
             {isLoading && (
               <svg
